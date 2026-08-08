@@ -1,13 +1,17 @@
+[env]
+_.source = "./scripts/version-info.sh"
+
 [tools]
 go = "1.26.2"
 
+[tasks.test]
+run = "env"
+
 [tasks.dev]
 env = { "DEBUG" = 1 }
-description = "Build and run dev version of workforest"
+description = "Build and run dev version of workpls"
 run = '''
-COMMIT=$(git rev-parse --short HEAD)
-DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-go run -ldflags="-X github.com/Moorad/workforest/cmd.VERSION=dev -X github.com/Moorad/workforest/cmd.COMMIT=$COMMIT -X github.com/Moorad/workforest/cmd.DATE=$DATE" main.go
+go run -ldflags="-X github.com/Moorad/workpls/cmd.VERSION=dev -X github.com/Moorad/workpls/cmd.COMMIT=$COMMIT -X github.com/Moorad/workpls/cmd.DATE=$DATE" main.go
 '''
 
 [tasks.gen-cmd]
@@ -15,13 +19,15 @@ description = "Generates a command using cobra cli"
 run = 'cobra-cli add'
 
 [tasks.build]
-description = "Build  a production version of workforest"
+description = "Build a production version of workpls"
 usage = '''
 arg "<version>" help="Application version"
 '''
 run = '''
-COMMIT=$(git rev-parse --short HEAD)
-DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-go build -ldflags="-X github.com/Moorad/workforest/cmd.VERSION={{arg(name='version')}} -X github.com/Moorad/workforest/cmd.COMMIT=$COMMIT -X github.com/Moorad/workforest/cmd.DATE=$DATE" -o workforest .
+go build -ldflags="-X github.com/Moorad/workpls/cmd.VERSION={{arg(name='version')}} -X github.com/Moorad/workpls/cmd.COMMIT=$COMMIT -X github.com/Moorad/workpls/cmd.DATE=$DATE" -o workpls .
 '''
+
+[tasks.deadcode]
+description = "Find dead code in the codebase"
+run = "go tool deadcode ./..."
 

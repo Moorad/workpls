@@ -1,5 +1,0 @@
-windows:
-  - name: nvim
-    command: nvim
-  - name: app
-    command: mise run dev

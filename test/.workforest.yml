@@ -1,8 +1,0 @@
-name: workforest-test
-
-windows:
-  - name: editor
-    command: echo "Hello world"
-  - name: scratch
-  - name: claude
-    command: claude
