@@ -8,20 +8,30 @@
 
 version: 2
 
+project_name: workpls
+
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
 
 builds:
-  - env:
+  - main: .
+    binary: workpls
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
       - windows
       - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/Moorad/workpls/cmd.VERSION={{ .Version }}
+      - -X github.com/Moorad/workpls/cmd.COMMIT={{ .ShortCommit }}
+      - -X github.com/Moorad/workpls/cmd.DATE={{ .Date }}
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
 archives:
   - formats: [tar.gz]
